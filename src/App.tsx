@@ -1,35 +1,141 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './assets/react.svg'
+import { Page } from './Page/Page';
+import { Route, Routes } from "react-router-dom";
+import { AppStateProvider } from './state/AppStateContext';
+import { Auth } from "./auth/Auth";
+import { Private } from './auth/Private';
 
+/* import { devtools } from 'zustand/middleware'
+import { zipWith } from "lodash"*/
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <Routes>
+            <Route path="/auth" element={<Auth />}/>
+            <Route path="/:id" element={
+                <Private component={
+                    <AppStateProvider>
+                        <Page />
+                    </AppStateProvider>
+                }/>
+                
+            } />
+            <Route path="/" element={
+                <Private component={
+                    <AppStateProvider >
+                        <Page />
+                    </AppStateProvider>
+                }/>
+            } />
+        </Routes>
+    );
 }
 
 export default App
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* function Page() {
+  interface Todo {
+    id: number;
+    title: string;
+    completed: boolean;
+  }
+
+  const [todos, setTodos] = useState<Todo[]>([])
+
+  useEffect(() => {
+    async function getTodos() {
+      const { data: todos } = await supabase.from('todos').select()
+
+      if (todos && todos.length > 1) {
+        setTodos(todos)
+      }
+    }
+
+    getTodos()
+  }, [])
+
+  return (
+    <><div>
+          {todos.map((todo) => (
+              <li key={todo.id}>{todo.title}</li>
+          ))}
+
+      </div><div>
+              <button onClick={async () => {
+                  const { data: todos } = await supabase.from('todos').insert([{ title: 'Do laundry', completed: false }])
+                  if (todos) {
+                    setTodos(prevTodos => [...prevTodos, ...todos])
+                  }
+              } }>Add todo</button>
+                
+          </div>
+            <div>
+                <button onClick={async () => {
+                    const { data: todos } = await supabase.from('todos').delete().match({ completed: true })
+                    if (todos) {
+                        setTodos(prevTodos => prevTodos.filter(todo => !todo.completed))
+                    }
+                }
+                }>Delete completed</button> 
+            </div>
+            <div>
+                <button onClick={async () => {
+                    const { data: todos } = await supabase.from('todos').update({ completed: true }).match({ completed: false })
+                    if (todos) {
+                        setTodos(prevTodos => prevTodos.map(todo => ({ ...todo, completed: true })))
+                    }
+                }
+                }>Complete all</button>
+            </div>  
+                </>
+    
+  )
+}
+export default  */
